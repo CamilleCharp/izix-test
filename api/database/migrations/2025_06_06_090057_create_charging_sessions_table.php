@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('charging_sessions', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->uuid('uuid')->primary();
+            $table->timestamp('started_at');
+            $table->timestamp('last_status_update');
+            $table->integer('starting_battery_percent');
+            $table->integer('current_battery_percent');
+            $table->foreignUuid('vehicle_uuid')->references('uuid')->on('vehicles');
+            $table->foreignUuid('connector_uuid')->references('uuid')->on('connectors');
         });
     }
 
