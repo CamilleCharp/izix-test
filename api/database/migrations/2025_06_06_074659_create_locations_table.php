@@ -12,8 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('locations', function (Blueprint $table) {
-            $table->id();
+            $table->uuid(column: 'uuid')->primary();
             $table->timestamps();
+            $table->string(column: 'name', length: 256)->unique();
+            $table->geography(column: 'coordinate', subtype: 'point');
+            $table->integer(column: 'capacity', unsigned: true);
         });
     }
 
