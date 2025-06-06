@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('station_level', function (Blueprint $table) {
+        Schema::create('station_levels', function (Blueprint $table) {
             $table->id();
             $table->integer(column: 'level', unsigned: false);
             $table->integer(column:'minimum_output', unsigned: false);
