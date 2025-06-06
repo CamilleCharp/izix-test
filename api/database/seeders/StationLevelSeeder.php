@@ -29,7 +29,7 @@ class StationLevelSeeder extends Seeder
         ]);
 
         StationLevel::create([
-            'level' => 1,
+            'level' => 3,
             'minimum_output' => 50000,
             'maximum_output' => 350000
         ]);
