@@ -5,8 +5,11 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+use App\Enums\Roles;
+use App\Enums\Permissions;
+
+use Spatie\Permission\Models\Role as RoleModel;
+use Spatie\Permission\Models\Permission as PermissionModel;
 
 class RoleSeeder extends Seeder
 {
@@ -15,21 +18,45 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = Role::create(['name' => 'admin']);
+        PermissionModel::get()->each(function ($permission) {
+            $permission->delete();
+        });
+        
+        RoleModel::get()->each(function ($role) {
+            $role->delete();
+        });
 
-        $registerTenant = Permission::create(['name'=> 'Register a new tenant']);
-        $registerLocation = Permission::create(['name'=> 'Register a new location']);
-        $registerStation = Permission::create(['name'=> 'Register a charging station']);
-        $forceEnd = Permission::create(['name'=> 'Force the end of a charging session']);
+        foreach (Roles::cases() as $role) {
+            RoleModel::create(['name' => $role->value]);
+        }
 
-        $admin->givePermissionTo($registerTenant, $registerLocation, $registerStation, $forceEnd);
+        foreach (Permissions::cases() as $permission) {
+            PermissionModel::create(['name' => $permission->value]);
+        }
 
-        $user = Role::create(['name'=> 'user']);
+        // Assign permissions to roles
 
-        $registerVehicle = Permission::create(['name'=> 'Register a vehicle']);
-        $startChargingSession = Permission::create(['name'=> 'Start a charging session']);
-        $endChargingSession = Permission::create(['name'=> 'End a charging session']);
+        $user = RoleModel::findByName(Roles::USER->value);
+        $user->givePermissionTo(
+            Permissions::REGISTER_VEHICLE,
+            Permissions::START_CHARGING_SESSION,
+            Permissions::END_CHARGING_SESSION,
+            Permissions::VIEW_VEHICLES,
+            Permissions::REGISTER_VEHICLE,
+            Permissions::DELETE_VEHICLE,
+        );
 
-        $user ->givePermissionTo($registerVehicle, $startChargingSession, $endChargingSession);
+        $admin = RoleModel::findByName(Roles::ADMIN->value);
+        $admin->givePermissionTo(
+            Permissions::VIEW_TENANTS,
+            Permissions::REGISTER_TENANT,
+            Permissions::REGISTER_LOCATION,
+            Permissions::REGISTER_CHARGING_STATION,
+            Permissions::DELETE_CHARGING_STATION,
+            Permissions::FORCE_END_CHARGING_SESSION,
+            Permissions::DELETE_EXTERNAL_VEHICLE,
+            Permissions::VIEW_EXTERNAL_VEHICLES,
+            Permissions::REGISTER_EXTERNAL_VEHICLE,
+        );
     }
 }

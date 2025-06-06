@@ -14,6 +14,8 @@ class StationLevelSeeder extends Seeder
      */
     public function run(): void
     {
+        StationLevel::truncate();
+
         StationLevel::create([
             'level' => 1,
             'minimum_output' => 1300,

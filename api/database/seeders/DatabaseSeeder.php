@@ -13,5 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(ConnectorTypeSeeder::class);
         $this->call(StationLevelSeeder::class);
+        $this->call(RoleSeeder::class);
+        $this->call(AdminSeeder::class);
     }
 }

@@ -15,6 +15,8 @@ class ConnectorTypeSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::table('connector_types')->truncate();
+
         ConnectorType::create([
             'name' => 'SAE J1772 (120V)',
             'max_voltage' => 120,
