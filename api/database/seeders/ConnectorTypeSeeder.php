@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use App\Enums\Current;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\ConnectorType;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +15,7 @@ class ConnectorTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table("connector_types")->insert([
+        ConnectorType::create([
             'name' => 'SAE J1772 (120V)',
             'max_voltage' => 120,
             'max_current' => 16,
@@ -22,7 +23,7 @@ class ConnectorTypeSeeder extends Seeder
             'current_type' => Current::AC->value
         ]);
 
-        DB::table("connector_types")->insert([
+        ConnectorType::create([
             'name' => 'SAE J1772 (208/240V)',
             'max_voltage' => 240,
             'max_current' => 80,
@@ -30,7 +31,9 @@ class ConnectorTypeSeeder extends Seeder
             'current_type' => Current::AC->value
         ]);
 
-        DB::table("connector_types")->insert([
+
+
+        ConnectorType::create([
             'name' => 'Mennekes (Single Phase)',
             'max_voltage' => 230,
             'max_current' => 32,
@@ -38,7 +41,7 @@ class ConnectorTypeSeeder extends Seeder
             'current_type' => Current::AC->value
         ]);
 
-        DB::table("connector_types")->insert([
+        ConnectorType::create([
             'name' => 'Mennekes (Three Phase)',
             'max_voltage' => 400,
             'max_current' => 32,
@@ -46,7 +49,7 @@ class ConnectorTypeSeeder extends Seeder
             'current_type' => Current::AC->value
         ]);
 
-        DB::table("connector_types")->insert([
+        ConnectorType::create([
             'name' => 'CCS 1',
             'max_voltage' => 1000,
             'max_current' => 500,
@@ -54,7 +57,7 @@ class ConnectorTypeSeeder extends Seeder
             'current_type' => Current::DC->value
         ]);
 
-        DB::table("connector_types")->insert([
+        ConnectorType::create([
             'name' => 'CCS 2',
             'max_voltage' => 1000,
             'max_current' => 500,
@@ -62,7 +65,7 @@ class ConnectorTypeSeeder extends Seeder
             'current_type' => Current::DC->value
         ]);
 
-        DB::table("connector_types")->insert([
+        ConnectorType::create([
             'name' => 'CHAdeMO',
             'max_voltage' => 400,
             'max_current' => 400,
@@ -70,7 +73,7 @@ class ConnectorTypeSeeder extends Seeder
             'current_type' => Current::DC->value
         ]);
 
-        DB::table("connector_types")->insert([
+        ConnectorType::create([
             'name' => 'GB/T (AC)',
             'max_voltage' => 250,
             'max_current' => 32,
@@ -78,7 +81,7 @@ class ConnectorTypeSeeder extends Seeder
             'current_type' => Current::AC->value
         ]);
 
-        DB::table("connector_types")->insert([
+        ConnectorType::create([
             'name' => 'GB/T (DC)',
             'max_voltage' => 440,
             'max_current' => 250,
