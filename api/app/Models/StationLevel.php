@@ -10,6 +10,6 @@ class StationLevel extends Model
     public $timestamps = false;
 
     public function types(): HasMany {
-        return $this->hasMany(StationType::class);
+        return $this->hasMany(StationType::class, 'station_level_id');
     }
 }

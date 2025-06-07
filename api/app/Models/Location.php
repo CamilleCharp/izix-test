@@ -6,5 +6,9 @@ use App\Models\UUIDModel;
 
 class Location extends UUIDModel
 {
-    //
+    protected $fillable = [
+        "name",
+        "coordinates",
+        "capacity",
+    ];
 }
