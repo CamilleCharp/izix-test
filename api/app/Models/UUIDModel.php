@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Ramsey\Uuid\Uuid;
 
 class UUIDModel extends Model
 {
@@ -11,6 +12,16 @@ class UUIDModel extends Model
     protected $keyType = "string";
 
     public $incrementing = false;
+
+    public function getRouteKeyName(): string
+    {
+    return 'uuid';
+    }
+
+    public function getKeyName(): string
+    {
+        return 'uuid';
+    }
 
     public static function boot() {
         parent::boot();
