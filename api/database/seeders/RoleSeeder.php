@@ -55,15 +55,25 @@ class RoleSeeder extends Seeder
         $admin->givePermissionTo(
             Permissions::VIEW_TENANTS,
             Permissions::REGISTER_TENANT,
+            Permissions::UPDATE_TENANT,
+            Permissions::DELETE_TENANT,
             Permissions::REGISTER_LOCATION,
+            Permissions::UPDATE_LOCATION,
+            Permissions::DELETE_LOCATION,
             Permissions::REGISTER_CHARGING_STATION_TYPE,
             PERMISSIONS::DELETE_CHARGING_STATION_TYPE,
             Permissions::REGISTER_CHARGING_STATION,
+            Permissions::UPDATE_CHARGING_STATION,
             Permissions::DELETE_CHARGING_STATION,
             Permissions::FORCE_END_CHARGING_SESSION,
+            Permissions::REGISTER_VEHICLE_TYPE,
+            Permissions::UPDATE_VEHICLE_TYPE,
+            Permissions::DELETE_VEHICLE_TYPE,
+            Permissions::VIEW_VEHICLE_TYPES,
             Permissions::DELETE_EXTERNAL_VEHICLE,
             Permissions::VIEW_EXTERNAL_VEHICLES,
             Permissions::REGISTER_EXTERNAL_VEHICLE,
+            Permissions::UPDATE_EXTERNAL_VEHICLE,
         );
 
         // Reapply the roles

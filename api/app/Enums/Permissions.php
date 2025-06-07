@@ -31,6 +31,11 @@ enum Permissions: string
     case END_CHARGING_SESSION = 'end_charging_session';
     case FORCE_END_CHARGING_SESSION = 'force_end_charging_session';
 
+    case VIEW_VEHICLE_TYPES = 'view_vehicle_types';
+    case REGISTER_VEHICLE_TYPE = 'register_vehicle_type';
+    case UPDATE_VEHICLE_TYPE = 'update_vehicle_type';
+    case DELETE_VEHICLE_TYPE = 'delete_vehicle_type';
+
     case VIEW_VEHICLES = 'view_vehicles';
     case REGISTER_VEHICLE = 'register_vehicle';
     case UPDATE_VEHICLE = 'update_vehicle';
@@ -68,6 +73,11 @@ enum Permissions: string
             self::UPDATE_CHARGING_SESSION => 'Update charging session',
             self::END_CHARGING_SESSION => 'End charging session',
             self::FORCE_END_CHARGING_SESSION => 'Force end charging session',
+
+            self::VIEW_VEHICLE_TYPES => 'View vehicle types',
+            self::REGISTER_VEHICLE_TYPE => 'Register vehicle type',
+            self::UPDATE_VEHICLE_TYPE => 'Update vehicle type',
+            self::DELETE_VEHICLE_TYPE => 'Delete vehicle type',
 
             self::VIEW_VEHICLES => 'View own vehicles',
             self::REGISTER_VEHICLE => 'Register own vehicles',
