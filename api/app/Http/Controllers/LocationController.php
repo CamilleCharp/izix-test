@@ -17,7 +17,7 @@ class LocationController extends Controller
      */
     public function index()
     {
-        $locations = Location::all()->map->only(['uuid', 'name', 'coordinate_wkt', 'capacity'])->toArray();
+        $locations = Location::all()->map->only(['uuid', 'name', 'coordinate', 'capacity'])->toArray();
 
         return response()->json(['locations' => $locations]);
     }
@@ -46,7 +46,7 @@ class LocationController extends Controller
     public function show(Location $location)
     {
         return response()->json([
-            'location' => $location->only(['uuid', 'name', 'coordinate_wkt', 'capacity', 'tenant']),
+            'location' => $location->only(['uuid', 'name', 'coordinate', 'capacity', 'tenant']),
         ]);
     }
 

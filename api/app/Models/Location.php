@@ -34,4 +34,18 @@ class Location extends UUIDModel
             ->where('uuid', $this->uuid)
             ->value(DB::raw("ST_AsText(coordinate)"));
     }
+
+    public function getCoordinateAttribute()
+    {
+        $coordinate = $this->coordinate_wkt;
+        
+        if ($coordinate) {
+            preg_match('/POINT\(([^)]+)\)/', $coordinate, $matches);
+            if (isset($matches[1])) {
+                [$lat, $lng] = array_map('floatval', explode(' ', $matches[1]));
+                return ['latitude' => $lat, 'longitude' => $lng];
+            }
+            
+        }
+    }
 }
