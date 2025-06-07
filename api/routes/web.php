@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\StationTypeController;
 use App\Http\Controllers\TenantController;
 use App\Http\Middleware\EnsureIsAdmin;
@@ -39,6 +40,20 @@ Route::prefix('tenants')->group(function() {
         ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
 
     Route::delete('/delete/{tenant}', [TenantController::class, 'destroy'])
+        ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
+});
+
+Route::prefix('locations')->group(function() {
+    Route::get('/', [LocationController::class, 'index']);
+    Route::get('/{location}', [LocationController::class, 'show']);
+
+    Route::post('/store', [LocationController::class, 'store'])
+        ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
+
+    Route::put('/update/{location}', [LocationController::class, 'update'])
+        ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
+
+    Route::delete('/delete/{location}', [LocationController::class, 'destroy'])
         ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
 });
 
