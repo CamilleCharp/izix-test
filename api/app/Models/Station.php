@@ -11,6 +11,11 @@ class Station extends UUIDModel
         "spot"
     ];
 
+    public function type()
+    {
+        return $this->belongsTo(StationType::class);
+    }
+
     public function location()
     {
         return $this->belongsTo(Location::class, 'location_uuid');
