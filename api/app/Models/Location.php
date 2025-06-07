@@ -11,4 +11,9 @@ class Location extends UUIDModel
         "coordinates",
         "capacity",
     ];
+
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class);
+    }
 }
