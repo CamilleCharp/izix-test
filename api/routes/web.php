@@ -131,4 +131,15 @@ Route::prefix('vehicles')->group(function() {
     // -----------------
 });
 
+Route::prefix('connectors')->group(function() {
+    Route::prefix('types')->group(function() {
+        Route::get('/', [\App\Http\Controllers\ConnectorTypeController::class, 'index']);
+        Route::get('/{connectorType}', [\App\Http\Controllers\ConnectorTypeController::class, 'show']);
+
+        // No store/update/delete methods as these are statics and managed by direct commands
+    });
+
+    
+});
+
 require __DIR__.'/auth.php';
