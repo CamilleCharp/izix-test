@@ -17,7 +17,7 @@ class StationTypeController extends Controller
      */
     public function index()
     {
-        $stationTypes = StationType::all()->map->only(['name', 'level', 'current', 'power'])->toArray();
+        $stationTypes = StationType::all()->map->only(['id', 'name', 'level', 'current', 'power'])->toArray();
 
         return response()->json(['station_types' => $stationTypes]);
     }
