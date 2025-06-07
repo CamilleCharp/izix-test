@@ -94,4 +94,41 @@ Route::prefix('locations')->group(function() {
 // END OF LOCATIONS |
 // ------------------
 
+Route::prefix('vehicles')->group(function() {
+    // ---------------
+    // VEHICLE TYPES |
+    // ---------------
+    Route::prefix('types')->group(function() {
+        Route::get('/', [\App\Http\Controllers\VehicleTypeController::class, 'index']);
+        Route::get('/{vehicleType}', [\App\Http\Controllers\VehicleTypeController::class, 'show']);
+
+        Route::post('/store', [\App\Http\Controllers\VehicleTypeController::class, 'store'])
+            ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
+
+        Route::put('/update/{vehicleType}', [\App\Http\Controllers\VehicleTypeController::class, 'update'])
+            ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
+
+        Route::delete('/delete/{vehicleType}', [\App\Http\Controllers\VehicleTypeController::class, 'destroy'])
+            ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
+    });
+    // ----------------------
+    // END OF VEHICLE TYPES |
+    // ----------------------
+
+    // ----------
+    // VEHICLES |
+    // ----------
+    Route::get('/', [\App\Http\Controllers\VehicleController::class, 'index']);
+    Route::get('/{vehicle}', [\App\Http\Controllers\VehicleController::class, 'show']);
+    Route::post('/store', [\App\Http\Controllers\VehicleController::class, 'store'])
+        ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
+    Route::put('/update/{vehicle}', [\App\Http\Controllers\VehicleController::class, 'update'])
+        ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
+    Route::delete('/delete/{vehicle}', [\App\Http\Controllers\VehicleController::class, 'destroy'])
+        ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
+    // -----------------
+    // END OF VEHICLES |
+    // -----------------
+});
+
 require __DIR__.'/auth.php';
