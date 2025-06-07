@@ -27,7 +27,7 @@ class StationTypeController extends Controller
      */
     public function store(StationTypeStoreRequest $request)
     {
-        $this->getValidLevel($request->input('level'), $request->input('power'));
+        $level = $this->getValidLevel($request->input('level'), $request->input('power'));
 
         $stationType = new StationType();
         $stationType->name = $request->input('name');
