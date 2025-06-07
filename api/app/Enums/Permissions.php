@@ -9,6 +9,10 @@ enum Permissions: string
     
     case VIEW_LOCATIONS = 'view_locations';
     case REGISTER_LOCATION = 'register_location';
+
+    case VIEW_CHARGING_STATIONS_TYPES = 'view_charging_station_types';
+    case REGISTER_CHARGING_STATION_TYPE = 'register_charging_station_type';
+    case DELETE_CHARGING_STATION_TYPE = 'delete_charging_station_type';
     
     case VIEW_CHARGING_STATIONS = 'view_charging_stations';
     case REGISTER_CHARGING_STATION = 'register_charging_station';
@@ -34,6 +38,10 @@ enum Permissions: string
             
             self::VIEW_LOCATIONS => 'View locations',
             self::REGISTER_LOCATION => 'Register location',
+
+            self::VIEW_CHARGING_STATIONS_TYPES => 'View charging station types',
+            self::REGISTER_CHARGING_STATION_TYPE => 'Register charging station type',
+            self::DELETE_CHARGING_STATION_TYPE => 'Delete charging station type',
             
             self::VIEW_CHARGING_STATIONS => 'View charging stations',
             self::REGISTER_CHARGING_STATION => 'Register charging station',

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,6 +19,10 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
+        // Save users roles
+        $users = User::withoutRole(Roles::ADMIN)->get();
+        $admins = User::role(Roles::ADMIN)->get();
+
         PermissionModel::get()->each(function ($permission) {
             $permission->delete();
         });
@@ -39,11 +44,11 @@ class RoleSeeder extends Seeder
         $user = RoleModel::findByName(Roles::USER->value);
         $user->givePermissionTo(
             Permissions::REGISTER_VEHICLE,
+            Permissions::VIEW_VEHICLES,
+            Permissions::DELETE_VEHICLE,
+            Permissions::VIEW_CHARGING_STATIONS_TYPES,
             Permissions::START_CHARGING_SESSION,
             Permissions::END_CHARGING_SESSION,
-            Permissions::VIEW_VEHICLES,
-            Permissions::REGISTER_VEHICLE,
-            Permissions::DELETE_VEHICLE,
         );
 
         $admin = RoleModel::findByName(Roles::ADMIN->value);
@@ -51,6 +56,8 @@ class RoleSeeder extends Seeder
             Permissions::VIEW_TENANTS,
             Permissions::REGISTER_TENANT,
             Permissions::REGISTER_LOCATION,
+            Permissions::REGISTER_CHARGING_STATION_TYPE,
+            PERMISSIONS::DELETE_CHARGING_STATION_TYPE,
             Permissions::REGISTER_CHARGING_STATION,
             Permissions::DELETE_CHARGING_STATION,
             Permissions::FORCE_END_CHARGING_SESSION,
@@ -58,5 +65,14 @@ class RoleSeeder extends Seeder
             Permissions::VIEW_EXTERNAL_VEHICLES,
             Permissions::REGISTER_EXTERNAL_VEHICLE,
         );
+
+        // Reapply the roles
+        foreach($users as $user) {
+            $user->assignRole(Roles::USER);
+        }
+
+        foreach($admins as $admin) {
+            $admin->assignRole(Roles::USER, Roles::ADMIN);
+        }
     }
 }
