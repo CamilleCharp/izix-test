@@ -17,6 +17,7 @@ class ConnectorTypeController extends Controller
 
         return response()->json($connectors->map(function ($connector) {
             return [
+                "id"=> $connector->id,
                 'name' => $connector->name,
                 'max_voltage' => $connector->max_voltage,
                 'max_current' => $connector->max_current,

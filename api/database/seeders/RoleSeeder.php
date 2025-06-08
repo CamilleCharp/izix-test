@@ -47,6 +47,7 @@ class RoleSeeder extends Seeder
             Permissions::VIEW_VEHICLES,
             Permissions::DELETE_VEHICLE,
             Permissions::VIEW_CHARGING_STATIONS_TYPES,
+            Permissions::VIEW_CONNECTORS,
             Permissions::START_CHARGING_SESSION,
             Permissions::END_CHARGING_SESSION,
         );
@@ -57,23 +58,32 @@ class RoleSeeder extends Seeder
             Permissions::REGISTER_TENANT,
             Permissions::UPDATE_TENANT,
             Permissions::DELETE_TENANT,
+
             Permissions::REGISTER_LOCATION,
             Permissions::UPDATE_LOCATION,
             Permissions::DELETE_LOCATION,
+
             Permissions::REGISTER_CHARGING_STATION_TYPE,
             PERMISSIONS::DELETE_CHARGING_STATION_TYPE,
+
             Permissions::REGISTER_CHARGING_STATION,
             Permissions::UPDATE_CHARGING_STATION,
             Permissions::DELETE_CHARGING_STATION,
-            Permissions::FORCE_END_CHARGING_SESSION,
+
+            Permissions::REGISTER_CONNECTOR,
+            Permissions::DELETE_CONNECTOR,
             Permissions::REGISTER_VEHICLE_TYPE,
+
             Permissions::UPDATE_VEHICLE_TYPE,
             Permissions::DELETE_VEHICLE_TYPE,
             Permissions::VIEW_VEHICLE_TYPES,
+
             Permissions::DELETE_EXTERNAL_VEHICLE,
             Permissions::VIEW_EXTERNAL_VEHICLES,
             Permissions::REGISTER_EXTERNAL_VEHICLE,
             Permissions::UPDATE_EXTERNAL_VEHICLE,
+
+            Permissions::FORCE_END_CHARGING_SESSION,
         );
 
         // Reapply the roles
