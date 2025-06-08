@@ -25,6 +25,11 @@ enum Permissions: string
     case UPDATE_CHARGING_STATION = 'update_charging_station';
     case DELETE_CHARGING_STATION = 'delete_charging_station';
 
+    case VIEW_CONNECTORS = 'view_connectors';
+    case REGISTER_CONNECTOR = 'register_connector';
+    case UPDATE_CONNECTOR = 'update_connector';
+    case DELETE_CONNECTOR = 'delete_connector';
+
     case VIEW_CHARGINS_SESSIONS = 'view_charging_sessions';
     case START_CHARGING_SESSION = 'start_charging_session';
     case UPDATE_CHARGING_SESSION = 'update_charging_session';
@@ -67,6 +72,10 @@ enum Permissions: string
             self::REGISTER_CHARGING_STATION => 'Register charging station',
             self::UPDATE_CHARGING_STATION => 'Update charging station',
             self::DELETE_CHARGING_STATION => 'Delete charging station',
+
+            self::VIEW_CONNECTORS => 'View connectors',
+            self::REGISTER_CONNECTOR => 'Register connector',
+            self::DELETE_CONNECTOR => 'Delete connector',
 
             self::VIEW_CHARGINS_SESSIONS => 'View charging sessions',
             self::START_CHARGING_SESSION => 'Start charging session',

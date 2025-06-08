@@ -131,15 +131,34 @@ Route::prefix('vehicles')->group(function() {
     // -----------------
 });
 
+
 Route::prefix('connectors')->group(function() {
+    // -----------------
+    // CONNECTOR TYPES |
+    // -----------------
     Route::prefix('types')->group(function() {
         Route::get('/', [\App\Http\Controllers\ConnectorTypeController::class, 'index']);
         Route::get('/{connectorType}', [\App\Http\Controllers\ConnectorTypeController::class, 'show']);
-
-        // No store/update/delete methods as these are statics and managed by direct commands
     });
+    // -----------------------
+    // END OF CONNECTOR TYPES |
+    // -----------------------
 
+    // ------------
+    // CONNECTORS |
+    // ------------
+    Route::get('/', [\App\Http\Controllers\ConnectorController::class, 'index']);
+    Route::get('/{connector}', [\App\Http\Controllers\ConnectorController::class, 'show']);
+
+    Route::post('/store', [\App\Http\Controllers\ConnectorController::class, 'store'])
+        ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
     
+    Route::delete('/delete/{connector}', [\App\Http\Controllers\ConnectorController::class, 'destroy'])
+        ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
+    // -------------------
+    // END OF CONNECTORS |
+    // -------------------
 });
+
 
 require __DIR__.'/auth.php';
