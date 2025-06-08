@@ -30,7 +30,8 @@ enum Permissions: string
     case UPDATE_CONNECTOR = 'update_connector';
     case DELETE_CONNECTOR = 'delete_connector';
 
-    case VIEW_CHARGINS_SESSIONS = 'view_charging_sessions';
+    case VIEW_CHARGING_SESSIONS = 'view_charging_sessions';
+    case VIEW_EXTERNAL_CHARGING_SESSIONS = 'view_external_charging_sessions';
     case START_CHARGING_SESSION = 'start_charging_session';
     case UPDATE_CHARGING_SESSION = 'update_charging_session';
     case END_CHARGING_SESSION = 'end_charging_session';
@@ -77,7 +78,8 @@ enum Permissions: string
             self::REGISTER_CONNECTOR => 'Register connector',
             self::DELETE_CONNECTOR => 'Delete connector',
 
-            self::VIEW_CHARGINS_SESSIONS => 'View charging sessions',
+            self::VIEW_CHARGING_SESSIONS => 'View charging sessions',
+            self::VIEW_EXTERNAL_CHARGING_SESSIONS => 'View external charging sessions',
             self::START_CHARGING_SESSION => 'Start charging session',
             self::UPDATE_CHARGING_SESSION => 'Update charging session',
             self::END_CHARGING_SESSION => 'End charging session',

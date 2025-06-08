@@ -49,6 +49,7 @@ class RoleSeeder extends Seeder
             Permissions::VIEW_CHARGING_STATIONS_TYPES,
             Permissions::VIEW_CONNECTORS,
             Permissions::START_CHARGING_SESSION,
+            Permissions::VIEW_CHARGING_SESSIONS,
             Permissions::END_CHARGING_SESSION,
         );
 
@@ -83,6 +84,7 @@ class RoleSeeder extends Seeder
             Permissions::REGISTER_EXTERNAL_VEHICLE,
             Permissions::UPDATE_EXTERNAL_VEHICLE,
 
+            Permissions::VIEW_EXTERNAL_CHARGING_SESSIONS,
             Permissions::FORCE_END_CHARGING_SESSION,
         );
 
