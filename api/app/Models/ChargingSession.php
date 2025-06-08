@@ -6,6 +6,9 @@ use App\Models\UUIDModel;
 
 class ChargingSession extends UUIDModel
 {
+    const CREATED_AT = 'started_at';
+    const UPDATED_AT = 'last_status_update';
+
     protected $fillable = [
         'status',
         'starting_battery_percent',

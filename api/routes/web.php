@@ -160,5 +160,17 @@ Route::prefix('connectors')->group(function() {
     // -------------------
 });
 
+Route::prefix('charging-sessions')->group(function() {
+    Route::get('/{session}', [\App\Http\Controllers\ChargingSessionController::class, 'monitor'])
+        ->middleware(['auth:sanctum']);
+
+    Route::post('/start', [\App\Http\Controllers\ChargingSessionController::class, 'start']);
+
+    Route::put('/update/{session}', [\App\Http\Controllers\ChargingSessionController::class, 'update']);
+
+    Route::post('/end/{session}', [\App\Http\Controllers\ChargingSessionController::class, 'end'])
+        ->middleware(['auth:sanctum']);
+});
+
 
 require __DIR__.'/auth.php';
