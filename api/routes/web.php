@@ -11,9 +11,8 @@ use Spatie\Permission\Models\Permission;
 Route::get('/', function () {
     return response()->json([
         'message' => 'Welcome to the API',
-        'user' => auth()->user()->only(['id', 'name', 'email']),
     ]);
-});
+})->middleware(['auth:sanctum']);
 
 Route::prefix('stations')->group(function() {
     // ---------------
