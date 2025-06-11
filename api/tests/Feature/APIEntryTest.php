@@ -25,16 +25,20 @@ class APIEntryTest extends TestCase
      */
     public function test_api_denied_while_unlogged(): void
     {
-        $response = $this->get('/');
+        $response = $this
+            ->withHeader('Accept', 'application/json')
+            ->get('/');
 
-        $response->assertStatus(500);
+        $response->assertStatus(401);
     }
 
     public function test_api_allowed_while_logged(): void
     {
         $this->actingAs(User::find(1)->first());
 
-        $response = $this->get('/');
+        $response = $this
+            ->withHeader('Accept', 'application/json')
+            ->get('/');
 
         $response->assertStatus(200);
     }
