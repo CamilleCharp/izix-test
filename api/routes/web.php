@@ -145,7 +145,7 @@ Route::prefix('vehicles')->group(function() {
         ->whereUuid('vehicle');
 
     Route::post('/store', [\App\Http\Controllers\VehicleController::class, 'store'])
-        ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
+        ->middleware(['auth:sanctum']);
         
     Route::put('/update/{vehicle}', [\App\Http\Controllers\VehicleController::class, 'update'])
         ->whereUuid('vehicle')
@@ -153,7 +153,7 @@ Route::prefix('vehicles')->group(function() {
 
     Route::delete('/delete/{vehicle}', [\App\Http\Controllers\VehicleController::class, 'destroy'])
         ->whereUuid('vehicle')
-        ->middleware(['auth:sanctum', EnsureIsAdmin::class]);
+        ->middleware(['auth:sanctum']);
     // -----------------
     // END OF VEHICLES |
     // -----------------

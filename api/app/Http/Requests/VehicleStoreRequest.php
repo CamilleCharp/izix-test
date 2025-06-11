@@ -13,7 +13,14 @@ class VehicleStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->hasPermissionTo(Permissions::REGISTER_VEHICLE);
+        $canCreateUsersVehicles = auth()->user()->hasPermissionTo(Permissions::REGISTER_EXTERNAL_VEHICLE);
+        $canCreateOwnVehicle = auth()->user()->hasPermissionTo(Permissions::REGISTER_VEHICLE);
+
+        if($this->has('owner')) {
+            return $canCreateUsersVehicles;
+        }
+
+        return $canCreateOwnVehicle;
     }
 
     public function failedAuthorization() {

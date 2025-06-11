@@ -14,12 +14,13 @@ class VehicleDestroyRequest extends FormRequest
     public function authorize(): bool
     {
         $canDeleteOwnVehicle = $this->user()->hasPermissionTo(Permissions::DELETE_VEHICLE);
-        $canDeleteAllVehicles = $this->user->hasPermissionTo(Permissions::DELETE_EXTERNAL_VEHICLE);
+        $canDeleteAllVehicles = $this->user()->hasPermissionTo(Permissions::DELETE_EXTERNAL_VEHICLE);
 
         if($canDeleteAllVehicles) return true;
 
         if($canDeleteOwnVehicle) {
-            return $this->route('vehicle')->owner()->firstOrFail()->is($this->user());
+            $isVehicleOwner = $this->route('vehicle')->owner()->firstOrFail()->is($this->user());
+            if($isVehicleOwner) return true;
         }
 
         return false;

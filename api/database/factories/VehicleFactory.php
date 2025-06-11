@@ -26,7 +26,7 @@ class VehicleFactory extends Factory
         ];
     }
 
-    private function generateLicensePlate()
+    public function generateLicensePlate()
     {
         $firstSection = fake()->numberBetween(1,9);
         $secondSection = Str::random(3);

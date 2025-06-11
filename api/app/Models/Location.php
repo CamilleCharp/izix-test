@@ -25,7 +25,8 @@ class Location extends UUIDModel
     // Helper method, allowing to set the coordinate as an array of [lat, lng]
     public function setCoordinateAttribute(array $coordinate)
     {
-        [$lat, $lng] = $coordinate;
+        $lat = $coordinate[0] ?? 0;
+        $lng = $coordinate[1] ?? 0;
 
         if(!app()->environment('testing')) {
             $this->attributes['coordinate'] = DB::raw("ST_GeomFromText('POINT($lat $lng)', 4326)");
@@ -37,6 +38,10 @@ class Location extends UUIDModel
     // The coordinate is stored as a WKB in the DB, use this attribute to get it as a WKT (readable format)
     public function getCoordinateWktAttribute()
     {
+        if(app()->environment("testing")) {
+            return 'POINT(0 0)';
+        }
+
         return DB::table($this->getTable())
             ->where('uuid', $this->uuid)
             ->value(DB::raw("ST_AsText(coordinate)"));

@@ -67,7 +67,8 @@ class RoleSeeder extends Seeder
             Permissions::DELETE_LOCATION,
 
             Permissions::REGISTER_CHARGING_STATION_TYPE,
-            PERMISSIONS::DELETE_CHARGING_STATION_TYPE,
+            Permissions::UPDATE_CHARGING_STATION_TYPE,
+            Permissions::DELETE_CHARGING_STATION_TYPE,
 
             Permissions::REGISTER_CHARGING_STATION,
             Permissions::UPDATE_CHARGING_STATION,

@@ -22,7 +22,6 @@ class ChargingSessionTest extends TestCase
         parent::setUp();
 
         $this->seed(RoleSeeder::class);
-        $this->seed(UserSeeder::class);
         $this->seed(StationLevelSeeder::class);
 
         $this->vehicle = Vehicle::factory()->create();
@@ -41,6 +40,7 @@ class ChargingSessionTest extends TestCase
         ]);
 
         $response->assertCreated();
+        $response->assertJsonStructure(['session_uuid', 'token']);
     }
 
     public function test_charging_session_cannot_be_started_without_api_key(): void

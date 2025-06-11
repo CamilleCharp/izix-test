@@ -45,10 +45,9 @@ class VehicleController extends Controller
     public function store(VehicleStoreRequest $request): JsonResponse
     {
         $vehicle = new Vehicle();
-
-        if(auth()->user()->hasPermissionTo(Permissions::REGISTER_EXTERNAL_VEHICLE) && $request->has('owner')) {
-            $owner = User::findOrFail($request->input('owner'));
-
+        
+        if($request->has('owner_id')) {
+            $owner = User::findOrFail($request->input('owner_id'))->first();
             $vehicle->owner()->associate($owner);
         } else {
             $vehicle->owner()->associate(auth()->user());
@@ -100,9 +99,8 @@ class VehicleController extends Controller
     public function update(VehicleUpdateRequest $request, Vehicle $vehicle): JsonResponse
     {
         // Set another user if the request come from someone authorized to do so.
-        if(auth()->user()->hasPermissionTo(Permissions::REGISTER_EXTERNAL_VEHICLE) && $request->has('owner')) {
-            $owner = User::findOrFail($request->input('owner'));
-
+        if($request->has('owner')) {
+            $owner = User::findOrFail($request->input('owner_id'));
             $vehicle->owner()->associate($owner);
         }
 

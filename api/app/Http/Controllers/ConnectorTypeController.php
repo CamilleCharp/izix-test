@@ -21,7 +21,7 @@ class ConnectorTypeController extends Controller
     {
         $connectors = ConnectorType::all();
 
-        return response()->json($connectors->map(function ($connector) {
+        $connectorTypes = $connectors->map(function ($connector) {
             return [
                 "id"=> $connector->id,
                 'name' => $connector->name,
@@ -30,7 +30,9 @@ class ConnectorTypeController extends Controller
                 'max_watts' => $connector->max_watts,
                 'current_type' => $connector->current_type,
             ];
-        }));
+        });
+
+        return response()->json(['connector_types' => $connectorTypes]);
     }
 
     /**
