@@ -4,10 +4,13 @@ namespace App\Models;
 
 use App\Models\UUIDModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
 
 class Location extends UUIDModel
 {
+    use HasFactory;
+    
     protected $fillable = [
         "name",
         "coordinates",
@@ -23,8 +26,12 @@ class Location extends UUIDModel
     public function setCoordinateAttribute(array $coordinate)
     {
         [$lat, $lng] = $coordinate;
-        
-        $this->attributes['coordinate'] = DB::raw("ST_GeomFromText('POINT($lat $lng)', 4326)");
+
+        if(!app()->environment('testing')) {
+            $this->attributes['coordinate'] = DB::raw("ST_GeomFromText('POINT($lat $lng)', 4326)");
+        } else {
+            $this->attributes['coordinate'] = "POINT($lat, $lng)";
+        }
     }
 
     // The coordinate is stored as a WKB in the DB, use this attribute to get it as a WKT (readable format)

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Models\UUIDModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Station extends UUIDModel
 {
+    use HasFactory;
+    
     protected $fillable = [
         "last_used_at",
         "spot"

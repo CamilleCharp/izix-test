@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Models\UUIDModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Connector extends UUIDModel
 {
+    use HasFactory;
+
     public function station()
     {
         return $this->belongsTo(Station::class, 'station_uuid');
