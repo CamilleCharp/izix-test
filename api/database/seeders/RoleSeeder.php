@@ -19,9 +19,11 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
+        $needToReassignRoles = RoleModel::get()->count() > 0;
+
         // Save users roles
-        $users = User::withoutRole(Roles::ADMIN)->get();
-        $admins = User::role(Roles::ADMIN)->get();
+        $users = $needToReassignRoles ? User::withoutRole(Roles::ADMIN)->get() : [];
+        $admins = $needToReassignRoles ? User::role(Roles::ADMIN)->get() : [];
 
         PermissionModel::get()->each(function ($permission) {
             $permission->delete();
