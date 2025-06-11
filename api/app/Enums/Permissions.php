@@ -2,6 +2,11 @@
 
 namespace App\Enums;
 
+/**
+ * Representation of all the users permissions
+ * used in tandem with Roles
+ * @see project://app/Enums/Roles.php
+ */
 enum Permissions: string
 {
     case VIEW_TENANTS = 'view_tenants';
@@ -51,6 +56,10 @@ enum Permissions: string
     case REGISTER_EXTERNAL_VEHICLE = 'register_external_vehicle';
     case UPDATE_EXTERNAL_VEHICLE = 'update_external_vehicle';
 
+    /**
+     * Return a readable summary of what the permission is
+     * @return string The permission description
+     */
     public function label(): string
     {
         return match ($this) {

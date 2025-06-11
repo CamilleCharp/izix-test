@@ -7,14 +7,18 @@ use App\Http\Requests\TenantDestroyRequest;
 use App\Http\Requests\TenantStoreRequest;
 use App\Http\Requests\TenantUpdateRequest;
 use App\Models\Tenant;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TenantController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the tenants.
+     * 
+     * @return JsonResponse All the tenants infos.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $tenants = Tenant::all()->map->only(['uuid', 'name'])->toArray();
 
@@ -22,27 +26,47 @@ class TenantController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created tenant in storage.
+     * 
+     * @param TenantStoreRequest $request The store request and its input, validated beforehand
+     * @see project://app/Http/Requests/TenantStoreRequest.php
+     * 
+     * @return JsonResponse The new tenant informations
      */
-    public function store(TenantStoreRequest $request)
+    public function store(TenantStoreRequest $request): JsonResponse
     {
-        Tenant::create([
+        $tenant = Tenant::create([
             'name' => $request->name,
         ]);
+
+        return response()->json([
+            'message' => "Tenant {$tenant->name} created",
+            'tenant' => $tenant
+        ], Response::HTTP_OK);
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified tenant.
+     * 
+     * @param Tenant $tenant The tenant object, found from the route with its uuid.
+     * 
+     * @return JsonResponse The tenant infos
      */
-    public function show(Tenant $tenant)
+    public function show(Tenant $tenant): JsonResponse
     {
         return response()->json(['tenant' => $tenant]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified tenant in storage.
+     * 
+     * @param TenantUpdateRequest $request The update request and its input, validated beforehand.
+     * @see project://app/Http/Requests/TenantUpdateRequest.php
+     * @param Tenant $tenant The tenant object, found from the route with its uuid.
+     * 
+     * @return JsonResponse The updated tenant infos.
      */
-    public function update(TenantUpdateRequest $request, Tenant $tenant)
+    public function update(TenantUpdateRequest $request, Tenant $tenant): JsonResponse
     {
         $tenant->update([
             'name' => $request->name,
@@ -52,13 +76,16 @@ class TenantController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified tenants from storage.
+     * 
+     * @param TenantDestroyRequest $request The destroy request, mostly used for authorization purposes.
+     * @see project://app/Http/Requests/TenantDestroyRequest.php
+     * @param Tenant $tenant The tenant object, found from the route with its uuid.
+     * 
+     * @return JsonResponse
      */
-    public function destroy(Tenant $tenant)
+    public function destroy(TenantDestroyRequest $request, Tenant $tenant): JsonResponse
     {
-        if(!auth()->user()->hasPermissionTo(Permissions::DELETE_TENANT)) {
-            return response()->json(['message' => 'You do not have permission to delete a tenant.'], 403);
-        }
         $name = $tenant->name;
         $tenant->delete();
 

@@ -3,20 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Permissions;
+use App\Http\Requests\StationDestroyRequest;
 use App\Http\Requests\StationStoreRequest;
 use App\Http\Requests\StationUpdateRequest;
 use App\Models\Location;
 use App\Models\Station;
 use App\Models\StationType;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * Controller in charge of the operations on the Station model.
+ */
 class StationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the stations.
+     * 
+     * @return JsonResponse the stations infos.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $stations = Station::all()->map->only(['uuid', 'name', 'spot', 'type', 'location', 'last_used_at']);
         return response()->json([
@@ -25,9 +32,14 @@ class StationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created station in storage.
+     * 
+     * @param StationStoreRequest $request The store request and its input, validated beforehand
+     * @see project://app/Http/Requests/StationStoreRequest.php
+     * 
+     * @return JsonResponse The newly created station infos.
      */
-    public function store(StationStoreRequest $request)
+    public function store(StationStoreRequest $request): JsonResponse
     {
         $type = StationType::findOrFail($request->input('type_id'));
         $location = Location::findOrFail($request->input('location_uuid'));
@@ -48,9 +60,13 @@ class StationController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified station.
+     * 
+     * @param Station $station The station object, found from the route with its uuid
+     * 
+     * @return JsonResponse The station infos
      */
-    public function show(Station $station)
+    public function show(Station $station): JsonResponse
     {
         return response()->json([
             'station' => $station->only(['name', 'spot', 'type', 'location', 'last_used_at']),
@@ -58,9 +74,14 @@ class StationController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified station in storage.
+     * 
+     * @param StationUpdateRequest $request The update request and its input, validated beforehand.
+     * @see project://app/Http/Requests/StationUpdateRequest.php
+     * 
+     * @return JsonResponse The new station infos.
      */
-    public function update(StationUpdateRequest $request, Station $station)
+    public function update(StationUpdateRequest $request, Station $station): JsonResponse
     {
         if($request->has('type_id')) {
             $type = StationType::findOrFail($request->input('type_id'));
@@ -83,17 +104,21 @@ class StationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified station from storage.
+     * 
+     * @param StationDestroyRequest $request Used mostly for authorization purpose.
+     * @see project://app/Http/Requests/StationDestroyRequest.php
+     * @param Station $station The station object, found from the route with its uuid.
+     * 
+     * @return JsonResponse
      */
-    public function destroy(Station $station)
+    public function destroy(StationDestroyRequest $request, Station $station): JsonResponse
     {
-        if(auth()->user()->hasPermissionTo(Permissions::DELETE_CHARGING_STATION)) {
             $name = $station->name;
             $station->delete();
 
             return response()->json([
                 'message' => "Station {$name} deleted successfully",
             ], Response::HTTP_OK);
-        }
     }
 }

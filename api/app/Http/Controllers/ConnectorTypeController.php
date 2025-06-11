@@ -3,15 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\ConnectorType;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-// * Connector Types Logic, no store/update/delete methods as these are statics and managed by direct commands
+/**
+ * Controller in charge of the API operations on the ConnectorType model.
+ * No store/update/delete methods as these are statics and managed by direct commands
+ */
 class ConnectorTypeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the connector types.
+     * 
+     * @return JsonResponse All connector types infos
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $connectors = ConnectorType::all();
 
@@ -28,9 +34,11 @@ class ConnectorTypeController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified connector type.
+     * 
+     * @param ConnectorType $connectorType The connector type object, found from the route with its id.
      */
-    public function show(ConnectorType $connectorType)
+    public function show(ConnectorType $connectorType): JsonResponse
     {
         return response()->json([
             'name' => $connectorType->name,

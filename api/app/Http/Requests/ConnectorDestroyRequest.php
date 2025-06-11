@@ -5,14 +5,14 @@ namespace App\Http\Requests;
 use App\Enums\Permissions;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ChargingSessionEndRequest extends ChargingSessionRequests
+class ConnectorDestroyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->hasValidAPIKey() && $this->hasValidToken();
+        return $this->user()->hasPermissionTo(Permissions::DELETE_CONNECTOR);
     }
 
     /**

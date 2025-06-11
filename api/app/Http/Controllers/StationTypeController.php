@@ -3,19 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Permissions;
+use App\Http\Requests\StationTypeDestroyRequest;
 use App\Http\Requests\StationTypeStoreRequest;
 use App\Http\Requests\StationTypeUpdateRequest;
 use App\Models\StationLevel;
 use App\Models\StationType;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * Controller in charge of the API operations on the StationTypes model
+ */
 class StationTypeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the station types.
+     * 
+     * @return JsonResponse The station types infos.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $stationTypes = StationType::all()->map->only(['id', 'name', 'level', 'current', 'power'])->toArray();
 
@@ -23,9 +32,14 @@ class StationTypeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created station type in storage.
+     * 
+     * @param StationTypeStoreRequest $request The store request, validated beforehand
+     * @see project://app/Http/Requests/StationTypeStoreRequest.php
+     * 
+     * @return JsonResponse The newly creation station type infos.
      */
-    public function store(StationTypeStoreRequest $request)
+    public function store(StationTypeStoreRequest $request): JsonResponse
     {
         $level = $this->getValidLevel($request->input('level'), $request->input('power'));
 
@@ -37,13 +51,20 @@ class StationTypeController extends Controller
 
         $stationType->save();
 
-        return response(status: Response::HTTP_CREATED);
+        return response()->json([
+            'message' => "Station type {$stationType->name} created.",
+            'station_type' => $stationType
+        ], Response::HTTP_OK);
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified station type.
+     * 
+     * @param StationType $stationType the station type object, found from the route with its id.
+     * 
+     * @return JsonResponse The station type infos.
      */
-    public function show(StationType $stationType)
+    public function show(StationType $stationType): JsonResponse
     {
         return response()->json([
             'station_type' => $stationType->only(['name', 'level', 'current', 'power'])
@@ -51,9 +72,15 @@ class StationTypeController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified station type in storage.
+     * 
+     * @param StationTypeUpdateRequest $request The update request and its input, validated beforehand.
+     * @see project://app/Http/Requests/StationTypeUpdateRequest.php
+     * @param StationType $stationType The station type object, found from the route with its id.
+     * 
+     * @return JsonResponse The updated station type infos.
      */
-    public function update(StationTypeUpdateRequest $request, StationType $stationType)
+    public function update(StationTypeUpdateRequest $request, StationType $stationType): JsonResponse
     {
         
         if($request->has('level') || $request->has('power')) {
@@ -75,34 +102,46 @@ class StationTypeController extends Controller
         $stationType->power = $request->input('power', $stationType->power);
 
         $stationType->save();
+
+        return response()->json([
+            'message' => "The station type {$stationType->name} has been updated successfully.",
+            'station_type' => $stationType
+        ]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified station type from storage.
+     * 
+     * @param StationTypeDestroyRequest $request Mostly used for authorization purposes.
+     * @see project://app/Http/Requests/StationTypeDestroyRequest.php
+     * @param StationType $stationType the station type object, found from the route with its id.
      */
-    public function destroy(StationType $stationType)
+    public function destroy(StationTypeDestroyRequest $request, StationType $stationType): JsonResponse
     {
-        if(!auth()->user()->hasPermissionTo(Permissions::DELETE_CHARGING_STATION)) {
-            return response()->json(['message' => 'You do not have permission to delete a charging station type.'], 403);
-        }
         $name = $stationType->name;
         $stationType->delete();
 
         return response()->json(['message' => "Station type '{$name}' deleted successfully."], Response::HTTP_OK);
     }
 
-    private function getValidLevel(int $level, int $power): JsonResponse|StationLevel
+    /**
+     * Helper function ensuring the station type is in its desired level specs before giving the level infos.
+     * 
+     * @param int $levelId The id of the level to retrieve
+     * @param int $power The power the station type is expected to have, in watts.
+     * @throws NotFoundHttpException|Exception 
+     * @return StationLevel The level infos.
+     */
+    private function getValidLevel(int $levelId, int $power): JsonResponse|StationLevel
     {
-        $level = StationLevel::where('level', $level)->first();
+        $level = StationLevel::where('level', $levelId)->first();
 
         if(!$level) {
-            return response()->json(['message' => 'Invalid station level'], Response::HTTP_BAD_REQUEST);
+            throw new NotFoundHttpException('Invalid station level ID');
         }
 
         if($power < $level->minimum_output || $power > $level->maximum_output) {
-            return response()->json([
-                'message' => "Power output must be between {$level->minimum_output}W and {$level->maximum_output}W for level {$level->level}."
-            ], Response::HTTP_BAD_REQUEST);
+            throw new Exception("Power output must be between {$level->minimum_output}W and {$level->maximum_output}W for level {$level->level}.");
         }
 
         return $level;
