@@ -36,4 +36,18 @@ class LocationUpdateRequest extends FormRequest
             "tenant" => "exists:tenants,uuid",
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.string' => 'The location name must be a string.',
+            'name.max' => 'The location name may not be greater than 255 characters.',
+            'name.unique' => 'The location name must be unique',
+            'coordinates.array' => 'The location coordinates must be an array composed of the latitude and the longitude',
+            'coordinates.size' => 'The location coordinate must contain and only contain the latitude and longitude',
+            'capacity.integer' => 'The location capacity must be a whole number',
+            'capacity.min' => 'The location capacity cannot be less than 1',
+            'tenant.exists' => 'The tenant id must point to a registered tenant',
+        ];
+    }
 }

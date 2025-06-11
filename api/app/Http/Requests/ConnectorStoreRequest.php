@@ -34,4 +34,14 @@ class ConnectorStoreRequest extends FormRequest
             "type_id" => "required|exists:connector_types,id",
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'station_uuid.required' => 'The connector station of origin id is required',
+            'station_uuid.exists' => 'The connector station origin must be registered',
+            'type_id.required' => 'The connector type iq required',
+            'type_id.exists' => 'The connector type must exists',
+        ];
+    }
 }

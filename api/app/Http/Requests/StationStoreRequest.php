@@ -41,8 +41,8 @@ class StationStoreRequest extends FormRequest
     {
         return [
             'name.required' => 'The station name is required',
-            'name.string' => 'The tenant name must be a string.',
-            'name.max' => 'The tenant name may not be greater than 255 characters.',
+            'name.string' => 'The station name must be a string.',
+            'name.max' => 'The station name may not be greater than 255 characters.',
             'spot.required' => 'The parking spot number is required',
             'spot.integer' => 'The parking spot number must be a whole number',
             'spot.min' => 'The parking spot number cannot be negative',

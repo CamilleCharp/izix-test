@@ -31,9 +31,21 @@ class StationUpdateRequest extends FormRequest
     {
         return [
             "name"=> "string|max:255",
-            "spot" => "integer",
+            "spot" => "integer|min:0",
             "type_id" => "exists:station_types,id",
             "location_uuid" => "exists:locations,uuid",
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.string' => 'The tenant name must be a string.',
+            'name.max' => 'The tenant name may not be greater than 255 characters.',
+            'spot.integer' => 'The parking spot number must be a whole number',
+            'spot.min' => 'The parking spot number cannot be negative',
+            'type_id.exists' => 'The station type must be registered',
+            'location_uuid.exists' => 'The location must be registered'
         ];
     }
 }

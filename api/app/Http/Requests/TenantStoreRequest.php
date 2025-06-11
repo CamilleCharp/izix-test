@@ -34,4 +34,14 @@ class TenantStoreRequest extends FormRequest
             "name"=> ["required", "string","max:255", Rule::unique('tenants', 'name')],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'The tenant name is required.',
+            'name.string' => 'The tenant name must be a string.',
+            'name.max' => 'The tenant name may not be greater than 255 characters.',
+            'name.unique' => 'The tenant name has already been taken.',
+        ];
+    }
 }
