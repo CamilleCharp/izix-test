@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\Permissions;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -14,6 +15,12 @@ class TenantUpdateRequest extends FormRequest
     public function authorize(): bool
     {
         return $this->user()->hasPermissionTo(Permissions::UPDATE_TENANT);
+    }
+
+    public function failedAuthorization() {
+        if(!$this->user()->hasPermissionTo(Permissions::UPDATE_TENANT)) {
+            throw new AuthorizationException("You do not have the permission to update a tenant");
+        }
     }
 
     /**

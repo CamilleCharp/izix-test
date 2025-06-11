@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\ChargingSession;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ChargingSessionStartRequest extends ChargingSessionRequests
@@ -17,6 +18,20 @@ class ChargingSessionStartRequest extends ChargingSessionRequests
             !$this->vehicleIsInUse();
     }
 
+    public function failedAuthorization() {
+        if(!$this->hasValidAPIKey()) {
+            throw new AuthorizationException("API Key is invalid.");
+        }
+
+        if($this->vehicleIsInUse()) {
+            throw new AuthorizationException("Vehicle is currently charging, unable to start a new charging session");
+        }
+
+        if($this->connectorIsInUse()) {
+            throw new AuthorizationException("Connector is currently in use, unable to start a new charging session");
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,9 +40,22 @@ class ChargingSessionStartRequest extends ChargingSessionRequests
     public function rules(): array
     {
         return [
-            "starting_battery_percent" => "required|numeric|min:0|max:100",
+            "starting_battery_percent" => "required|numeric|between:0,100",
             "vehicle_uuid" => "required|exists:vehicles,uuid",
             "connector_uuid" => "required|exists:connectors,uuid",
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'starting_battery_percent.required' => 'The starting battery (in %) is required',
+            'starting_battery_percent.numeric' => 'The starting battery (in %) must be a number',
+            'starting_battery_percent.between' => 'The battery cannot go below 0% or 100%',
+            'vehicle_uuid.required' => 'The uuid of the vehicle to charge is required.',
+            'vehicle_uuid.exists' => 'The vehicle to charge must be registered',
+            'connector_uuid.required' => 'The uuid of the connector to use is required.',
+            'connector_uuid.exists' => 'The connector to use must be registered',
         ];
     }
         

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\Permissions;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class VehicleDestroyRequest extends FormRequest
@@ -12,7 +13,29 @@ class VehicleDestroyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->hasPermissionTo(Permissions::DELETE_VEHICLE) || $this->user->hasPermissionTo(Permissions::DELETE_EXTERNAL_VEHICLE);
+        $canDeleteOwnVehicle = $this->user()->hasPermissionTo(Permissions::DELETE_VEHICLE);
+        $canDeleteAllVehicles = $this->user->hasPermissionTo(Permissions::DELETE_EXTERNAL_VEHICLE);
+
+        if($canDeleteAllVehicles) return true;
+
+        if($canDeleteOwnVehicle) {
+            return $this->route('vehicle')->owner()->firstOrFail()->is($this->user());
+        }
+
+        return false;
+    }
+
+
+    public function failedAuthorization() {
+        if(!$this->user->hasPermissionTo(Permissions::DELETE_VEHICLE)) {
+            throw new AuthorizationException("You do not have the permission to delete a vehicle.");
+        }
+        
+        if(!$this->route('session')->vehicle()->first()->owner()->firstOrFail()->is($this->user())) {
+            if(!$this->user->hasPermissionTo(Permissions::DELETE_EXTERNAL_VEHICLE)) {
+                throw new AuthorizationException('You are not authorized to delete a vehicle other than yours');
+            }
+        }
     }
 
     /**

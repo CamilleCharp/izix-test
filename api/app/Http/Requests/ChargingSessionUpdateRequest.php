@@ -23,24 +23,19 @@ class ChargingSessionUpdateRequest extends ChargingSessionRequests
      */
     public function rules(): array
     {
-        \Log::info($this->input('current_battery_percent'));
-
         return [
             "current_battery_percent" => "required|integer|between:0,100",
             "token" => "required|string|size:64",
         ];
     }
 
-    public function failedAuthorization()
-    {
+    public function failedAuthorization() {
         if(!$this->hasValidAPIKey()) {
-            throw new AuthorizationException("API Key is not valid");
+            throw new AuthorizationException("API Key is invalid.");
         }
 
-        if(!$this->hasValidToken()) {
-            throw new AuthorizationException("Token is invalid");
+        if($this->hasValidToken()) {
+            throw new AuthorizationException("The given update token is invalid");
         }
-
-        parent::failedAuthorization();
     }
 }

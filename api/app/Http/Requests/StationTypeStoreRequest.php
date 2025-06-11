@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\Current;
 use App\Enums\Permissions;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -15,6 +16,12 @@ class StationTypeStoreRequest extends FormRequest
     public function authorize(): bool
     {
         return $this->user()->hasPermissionTo(Permissions::REGISTER_CHARGING_STATION_TYPE);
+    }
+
+    public function failedAuthorization() {
+        if(!$this->user()->hasPermissionTo(Permissions::REGISTER_CHARGING_STATION_TYPE)) {
+            throw new AuthorizationException("You do not have the permission to create a new charging station type");
+        }
     }
 
     /**

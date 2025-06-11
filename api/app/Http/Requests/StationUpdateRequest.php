@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\Permissions;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StationUpdateRequest extends FormRequest
@@ -13,6 +14,12 @@ class StationUpdateRequest extends FormRequest
     public function authorize(): bool
     {
         return $this->user()->hasPermissionTo(Permissions::UPDATE_CHARGING_STATION);
+    }
+
+    public function failedAuthorization() {
+        if(!$this->user()->hasPermissionTo(Permissions::UPDATE_CHARGING_SESSION)) {
+            throw new AuthorizationException("You do not have the permission to update a charging station");
+        }
     }
 
     /**

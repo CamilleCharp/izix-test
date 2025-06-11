@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\Permissions;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ConnectorStoreRequest extends FormRequest
@@ -13,6 +14,12 @@ class ConnectorStoreRequest extends FormRequest
     public function authorize(): bool
     {
         return $this->user()->hasPermissionTo(Permissions::REGISTER_CONNECTOR);
+    }
+
+    public function failedAuthorization() {
+        if(!$this->user()->hasPermissionTo(Permissions::REGISTER_CONNECTOR)) {
+            throw new AuthorizationException("You do not have the permission to create a new connector");
+        }
     }
 
     /**

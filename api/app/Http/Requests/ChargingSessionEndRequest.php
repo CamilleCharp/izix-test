@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\Permissions;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ChargingSessionEndRequest extends ChargingSessionRequests
@@ -13,6 +14,16 @@ class ChargingSessionEndRequest extends ChargingSessionRequests
     public function authorize(): bool
     {
         return $this->hasValidAPIKey() && $this->hasValidToken();
+    }
+
+    public function failedAuthorization() {
+        if(!$this->hasValidAPIKey()) {
+            throw new AuthorizationException("API Key is invalid.");
+        }
+
+        if($this->hasValidToken()) {
+            throw new AuthorizationException("The given update token is invalid");
+        }
     }
 
     /**

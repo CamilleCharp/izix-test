@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\Permissions;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LocationDestroyRequest extends FormRequest
@@ -13,6 +14,12 @@ class LocationDestroyRequest extends FormRequest
     public function authorize(): bool
     {
         return $this->user()->hasPermissionTo(Permissions::DELETE_LOCATION);
+    }
+
+    public function failedAuthorization() {
+        if(!$this->user()->hasPermissionTo(Permissions::DELETE_LOCATION)) {
+            throw new AuthorizationException("You do not have the permission to delete a location");
+        }
     }
 
     /**

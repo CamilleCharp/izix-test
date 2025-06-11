@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\Permissions;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LocationUpdateRequest extends FormRequest
@@ -13,6 +14,12 @@ class LocationUpdateRequest extends FormRequest
     public function authorize(): bool
     {
         return auth()->user()->hasPermissionTo(Permissions::UPDATE_LOCATION);
+    }
+
+    public function failedAuthorization() {
+        if(!$this->user()->hasPermissionTo(Permissions::UPDATE_LOCATION)) {
+            throw new AuthorizationException("You do not have the permission to update a location");
+        }
     }
 
     /**
