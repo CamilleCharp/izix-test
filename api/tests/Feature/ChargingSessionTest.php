@@ -29,19 +29,11 @@ class ChargingSessionTest extends TestCase
         $this->connector = Connector::factory()->create();
     }
 
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
-    {
-        $this->assertTrue(true);
-    }
-
     public function test_charging_session_can_be_started(): void
     {
         $response = $this->withHeaders([
             'Accept' => 'application/json',
-            'API-KEY' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            'API-KEY' => env('SIMULATOR_API_KEY'),
         ])->post('/charging-sessions/start', [
             'vehicle_uuid' => $this->vehicle->uuid,
             'connector_uuid' => $this->connector->uuid,
@@ -66,7 +58,7 @@ class ChargingSessionTest extends TestCase
     {
         $response = $this->withHeaders([
             'Accept' => 'application/json',
-            'API-KEY' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            'API-KEY' => env('SIMULATOR_API_KEY'),
         ])->post('/charging-sessions/start', [
             'vehicle_uuid' => 'aaa',
             'connector_uuid' => $this->connector->uuid,
@@ -80,7 +72,7 @@ class ChargingSessionTest extends TestCase
     {
         $response = $this->withHeaders([
             'Accept' => 'application/json',
-            'API-KEY' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            'API-KEY' => env('SIMULATOR_API_KEY'),
         ])->post('/charging-sessions/start', [
             'vehicle_uuid' => $this->vehicle->uuid,
             'connector_uuid' => 'aaa',
@@ -94,7 +86,7 @@ class ChargingSessionTest extends TestCase
     {
         $response = $this->withHeaders([
             'Accept' => 'application/json',
-            'API-KEY' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            'API-KEY' => env('SIMULATOR_API_KEY'),
         ])->post('/charging-sessions/start', [
             'vehicle_uuid' => $this->vehicle->uuid,
             'connector_uuid' => $this->connector->uuid,
@@ -108,7 +100,7 @@ class ChargingSessionTest extends TestCase
     {
         $response = $this->withHeaders([
             'Accept' => 'application/json',
-            'API-KEY' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            'API-KEY' => env('SIMULATOR_API_KEY'),
         ])->post('/charging-sessions/start', [
             'vehicle_uuid' => $this->vehicle->uuid,
             'connector_uuid' => $this->connector->uuid,
