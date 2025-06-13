@@ -28,7 +28,12 @@ class CachedInfosService
 
         return Cache::remember($cacheKey, 60 * 60, function () use ($connectorUuid) {
             try {
-                $connectorRes = $this->client->get('/connectors/' . $connectorUuid);
+                $connectorRes = $this->client->get('/api/connectors/' . $connectorUuid, [
+                    "headers" => [
+                        "Accept" => 'application/json',
+                        "API-KEY" => env("FAKE_API_KEY")
+                    ],
+                ]);
             } catch (BadResponseException $e) {
                 match($e->getCode()) {
                     500 => throw new Exception('An error occured on the server side, try again in a few time', 500),
@@ -37,7 +42,6 @@ class CachedInfosService
                     default => throw new Exception('An error occured, try again in a few time', 500)
                 };
             }
-
             ['connector' => $connector] = json_decode($connectorRes->getBody()->getContents(), true);
             ['current_type' => $currentType, 'max_voltage' => $maxVoltage, 'max_current' => $maxCurrent] = $connector['type'];
 
@@ -60,7 +64,12 @@ class CachedInfosService
 
         return Cache::remember($cacheKey, 60 * 60, function() use ($vehicleUuid) {
             try {
-                $vehicleRes = $this->client->get('/vehicles/' . $vehicleUuid);
+                $vehicleRes = $this->client->get('/api/vehicles/' . $vehicleUuid, [
+                    "headers" => [
+                        "Accept" => 'application/json',
+                        "API-KEY" => env("FAKE_API_KEY")
+                    ],
+                ]);
             } catch (BadResponseException $e) {
                 match($e->getCode()) {
                     500 => throw new Exception('An error occured on the server side, try again in a few time', 500),
@@ -72,12 +81,18 @@ class CachedInfosService
             $vehicleTypeId = json_decode($vehicleRes->getBody()->getContents(), true)['type']['id'];
 
             
-            $vehicleType = $this->client->get('vehicles/types/' . $vehicleTypeId);
+            $vehicleType = $this->client->get('/api/vehicles/types/' . $vehicleTypeId, [
+                "headers" => [
+                    "Accept" => 'application/json',
+                    "API-KEY" => env("FAKE_API_KEY")
+                ],
+            ]);
+
             [
                 'maximum_ac_input' => $maxAcInput, 
                 'maximum_dc_input' => $maxDcInput, 
                 'battery_capacity' => $batteryCapacity
-            ] = json_decode($vehicleType->getBody()->getContents(), true);
+            ] = json_decode($vehicleType->getBody()->getContents(), true)['vehicle_type'];
         
             return [
                 'max_ac_input' => $maxAcInput,

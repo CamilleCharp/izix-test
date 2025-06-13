@@ -8,16 +8,21 @@ export TEST_API_USER=api
 export TEST_API_PASSWORD=api
 export TEST_POSTGRES_PASSWORD=root
 export SIMULATOR_API_KEY=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+export FAKE_API_KEY=bTksWRZoRzsfsHWOwnYsMSjFfIoMVhHWPYZDVRAkrxdGipIcjfnOzxPfenWZXpSv
 
-cd api/
+export API_URL=http://app-web
+export SIMULATOR_URL=http://simulator-web
+
+
+cd app/
 echo "Running tests locally before deployments"
 
-api_output=$(php artisan test)
+app_output=$(php artisan test)
 
 echo "Tests :"
-echo "$api_output"
+echo "$app_output"
 
-if echo "$api_output" | grep -q "FAILURES\|ERRORS\|FAIL"; then
+if echo "$app_output" | grep -q "FAILURES\|ERRORS\|FAIL"; then
     echo "Some API tests failed, aborting deployment."
     exit 1
 else
@@ -40,4 +45,4 @@ fi
 
 cd ../
 
-podman compose up -d
+podman compose up --build -d

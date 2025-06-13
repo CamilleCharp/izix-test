@@ -134,7 +134,7 @@ class CachedInfosServiceTest extends TestCase
     {
         $cachedInfosService = $this->getServiceWithMockClient(CachedInfosService::class, [
             new Response(200, [], json_encode(['type' => ['id' => '1']])),
-            new Response(200, [], json_encode(['maximum_ac_input' => 1000, 'maximum_dc_input' => 10000, 'battery_capacity' => 100000]))
+            new Response(200, [], json_encode(['vehicle_type' => ['maximum_ac_input' => 1000, 'maximum_dc_input' => 10000, 'battery_capacity' => 100000]]))
         ]);
 
         [

@@ -59,10 +59,10 @@ class ChargeVehicle implements ShouldQueue
     )
     {
         $cachedInfos = new CachedInfosService();
-
+        
         ['max_power' => $maxPower, 'current_type' => $currentType] = $cachedInfos->getCachedConnectorInfos($this->connectorUuid);
         ['battery_capacity' => $batteryCapacity, 'max_ac_input' => $maxAcInput, 'max_dc_input' => $maxDcInput] = $cachedInfos->getCachedVehicleInfos($this->vehicleUuid);
-
+        
         $this->batteryCapacity = $batteryCapacity;
         $this->realInput = match($currentType) {
             "AC" => $maxAcInput < $maxPower ? $maxAcInput : $maxPower,
@@ -81,7 +81,6 @@ class ChargeVehicle implements ShouldQueue
      */
     public function handle(ChargeService $chargeService): void
     {
-
         ['watts' => $startingCharge, 'percent' => $startingChargePercent] = $chargeService->calculateCharge($this->batteryCapacity, $this->startingCharge);
 
         ['real' => $realTime, 'simulated' => $simulatedTime] = $chargeService->calculateTimeToComplete(

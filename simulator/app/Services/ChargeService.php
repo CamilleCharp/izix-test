@@ -25,7 +25,7 @@ class ChargeService {
     {
         try {
             $chargingSessionRes = $this->client->post(
-                "/charging-sessions/start", 
+                "/api/charging-sessions/start", 
                 [
                     "headers" => [
                         "Accept" => 'application/json',
@@ -65,7 +65,7 @@ class ChargeService {
     {
         try {
 
-            $updateRes = $this->client->put("/charging-sessions/update/{$sessionUuid}", 
+            $updateRes = $this->client->put("/api/charging-sessions/update/{$sessionUuid}", 
             [
                 "headers" => [
                     "Accept" => 'application/json',
@@ -95,7 +95,7 @@ class ChargeService {
     public function endChargeSession(string $sessionUuid, string $token): bool
     {
         try {
-            $this->client->post("/charging-sessions/end/{$sessionUuid}", 
+            $this->client->post("/api/charging-sessions/end/{$sessionUuid}", 
             [
                 "headers" => [
                     "Accept" => 'application/json',
